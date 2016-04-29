@@ -52,12 +52,41 @@ public class GestionBD {
 		return liste;
 	}
 	
+	/*Fonction de Creation liste des utilisateur*/
+	public ArrayList<String> utilisateurs(){
+		ArrayList<String> liste = new ArrayList();
+		try {
+			Statement st = driverload.getConnexion().createStatement();
+			ResultSet rs = st.executeQuery("select nom_user, prenom_user from UTILISATEURS;");
+			while(rs.next()){
+				liste.add(rs.getString("nom_user, prenom_user"));
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return liste;
+	}
+	
 	/*Fonction de creation de compte*/
 	public void inscription(int num,String nom, String prenom, String mobile,String email,String id, String mdp){
 		ArrayList<String> liste = new ArrayList();
 		try {
 			Statement st = driverload.getConnexion().createStatement();
 			int rs = st.executeUpdate("insert into UTILISATEURS (ID_SERVICES,NOM_USER,PRENOM_USER,MOBILE,EMAIL,LOGIN_USER,PWD_USER) values ('"+num+"','"+nom+"','"+prenom+"','"+mobile+"','"+email+"','"+id+"','"+mdp+"');");
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	/*Fonction de modification de compte*/
+	public void modification(String nomOri,int num,String nom, String prenom, String mobile,String email,String id, String mdp,int admin){
+		ArrayList<String> liste = new ArrayList();
+		try {
+			Statement st = driverload.getConnexion().createStatement();
+			int rs = st.executeUpdate("update UTILISATEURS set ID_SERVICES='"+num+"' ,NOM_USER='"+nom+"',PRENOM_USER='"+prenom+"',MOBILE='"+mobile+"',EMAIL='"+email+"',LOGIN_USER='"+id+"',PWD_USER='"+mdp+"',admin='"+admin+"' WHERE NOM_USER='"+nomOri+"' ;");
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
