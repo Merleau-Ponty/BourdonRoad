@@ -1,3 +1,4 @@
+
 package bourdinroad;
 
 import java.awt.BorderLayout;
@@ -24,7 +25,7 @@ import javax.swing.border.Border;
 
 import bourdinroad.vueInscription.GererBouton;
 
-public class adminUtilisateurs extends JPanel implements MouseListener{
+public class userUtilisateurs extends JPanel{
 	JButton modifUser=new JButton("Modifier l'utilisateurs");
 	JComboBox users,serv;
 	JCheckBox admin;
@@ -32,16 +33,15 @@ public class adminUtilisateurs extends JPanel implements MouseListener{
 	JTextField[] textForm=new JTextField[7];
 	JPanel mainCadre=new JPanel();
 	GestionBD insc = new GestionBD();
-	String recap,email,messError[],caract_ind[], nom, prenom, tab_nom[];
-	int adm=0;
+	String recap,email,messError[],caract_ind[];
 	
-	 public adminUtilisateurs() {
+	 public userUtilisateurs() {
 		 	super();
 			JPanel gestUsers=new JPanel();
 			//inscription.setLayout(new GridBagLayout());
 			
 			//bordure
-			Border borderCadre=BorderFactory.createTitledBorder("Modification Utilisateur : Admin");
+			Border borderCadre=BorderFactory.createTitledBorder("Modification Utilisateur : Utilisateur");
 			gestUsers.setBorder(borderCadre);
 			mainCadre.add(gestUsers, "CadreCo");
 			setLayout(new BorderLayout());
@@ -77,14 +77,6 @@ public class adminUtilisateurs extends JPanel implements MouseListener{
 			
 			champForm[8]=new JLabel(" ");
 			
-			/*Creation de la liste deroulante avec les donnée de la table Utilisateurs*/
-			champForm[9]=new JLabel("Utilisateurs :");
-			users = new JComboBox(insc.utilisateurs().toArray());
-			// redimensionne la taille de la liste
-			users.setPreferredSize(new Dimension(160,25));
-			
-			champForm[10]=new JLabel("Administrateur");
-			admin= new JCheckBox();
 			
 			/*Ajout de ce composant au container en spécifiant une contrainte de type GridBagConstraints. */
 			gestUsers.setLayout(new GridBagLayout());
@@ -161,36 +153,24 @@ public class adminUtilisateurs extends JPanel implements MouseListener{
 		    gbc.gridy=8;
 		    gbc.gridx=1;
 		    gestUsers.add(textForm[6], gbc);
-
-		    /*Administrateur*/
-		    gbc.gridy=9;
-		    gbc.gridx=0;
-		    gestUsers.add(champForm[10], gbc);
-		    gbc.gridy=9;
-		    gbc.gridx=1;
-		    gestUsers.add(admin, gbc);
 		    
 		    /*Saut de ligne avant les boutons*/
-		    gbc.gridy=10;
+		    gbc.gridy=9;
 		    gbc.gridx=0;
 		    gestUsers.add(champForm[8], gbc);
 		    
 		    /*Boutons*/
-		    gbc.gridy=11;
+		    gbc.gridy=10;
 		    gbc.gridx=0;
 		    gestUsers.add(modifUser, gbc);
 		    
 		    GererBouton gest = new GererBouton();
 			modifUser.addActionListener(gest);
-			users.addMouseListener(gest);
 	 }
 	 
 	 final class GererBouton implements ActionListener{
 			@Override
 			public void actionPerformed(ActionEvent event) {
-				if(admin.isSelected()){
-				  	adm=1;
-				  }
 				/*if(verif()){
 					try {
 						insc.modification(serv.getSelectedIndex(),textForm[0].getText().toString(),textForm[1].getText().toString(),textForm[2].getText().toString(),textForm[3].getText().toString(),textForm[4].getText().toString(),textForm[5].getText().toString());
@@ -276,57 +256,4 @@ public class adminUtilisateurs extends JPanel implements MouseListener{
 			/*Renvoie l'inverse de vide si vide = false renvoie true*/
 			return !vide;		
 		}
-	 /*permet de remplir automatiquement les champs en fonction de l'utilisateur choisie dans la liste deroulante*/
-	 @Override
-		public void mouseExited(MouseEvent event) {
-			
-		}
-	@Override
-	public void mouseClicked(MouseEvent event) {
-		// TODO Auto-generated method stub
-		if(event.getSource()== users){
-			System.out.println("On rentre bien dans le mouse clickedS");
-			int indice = users.getSelectedIndex();
-			nom = users.getSelectedItem().toString();
-			
-			      for (String retval: nom.split(" ")){
-			    	  for(int i=0; i<2;i++){
-			    			tab_nom[i]=retval;
-			    	  	}
-			    	  }
-			      }
-			System.out.println(nom);
-			ArrayList<String> list = insc.getInfoUser(tab_nom[0],tab_nom[1]);
-			
-			/*On remplie les champs du formulaire*/
-			textForm[0].setText(list.get(1));  /*Nom*/
-			textForm[1].setText(list.get(2));   /*Prenom*/ 
-			textForm[2].setText(list.get(3));   /*Mobile*/ 
-			/*Le service*/
-			String service = list.get(0);
-			serv.setSelectedItem(service);
-			textForm[3].setText(list.get(4));   /*email*/ 
-			textForm[4].setText(list.get(5));   /*Identifiant*/ 
-			textForm[5].setText(list.get(6));   /*mdp*/ 
-			textForm[6].setText(list.get(6));   /*mdp confirmation*/ 
-			/*Admin*/
-			if(list.get(7).toString()=="1"){
-				admin.setSelected(true);
-			}
-	}
-	@Override
-	public void mouseEntered(MouseEvent arg0) {
-		// TODO Auto-generated method stub
-		
-	}
-	@Override
-	public void mousePressed(MouseEvent arg0) {
-		// TODO Auto-generated method stub
-		
-	}
-	@Override
-	public void mouseReleased(MouseEvent arg0) {
-		// TODO Auto-generated method stub
-		
-	}
 }

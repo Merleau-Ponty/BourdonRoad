@@ -33,7 +33,7 @@ public class vueConnexion extends JPanel {
 	JLabel labelMdp=new JLabel("Mot de passe :");
 	JTextField login=new JTextField(7);
 	JPasswordField mdp=new JPasswordField(7);
-	JButton connexion = new JButton("Connexion");
+	JButton connect = new JButton("Connexion");
 	JButton inscription= new JButton("Formumlaire d'inscription");
 	GestionBD co = new GestionBD();
 	//vueMenuAdmin vuMenu = new vueMenuAdmin();
@@ -41,10 +41,6 @@ public class vueConnexion extends JPanel {
 	public vueConnexion(){
 		//#windowsbuilder
 		super();
-		/*setSize(largeur,hauteur);*/
-		
-		/*Container g=getContentPane();
-		g.setLayout(new GridBagLayout());*/
 		
 		JPanel cadreCo = new JPanel();
 		//panel cadre
@@ -54,7 +50,7 @@ public class vueConnexion extends JPanel {
 		cadreCo.add(labelMdp);
 		cadreCo.add(login);
 		cadreCo.add(mdp);
-		cadreCo.add(connexion);
+		cadreCo.add(connect);
 		cadreCo.add(inscription);
 		mainCadre.add(cadreCo, "CadreCo");
 		setLayout(new BorderLayout());
@@ -85,17 +81,44 @@ public class vueConnexion extends JPanel {
 		//Boutons
 		gbc1.gridy=4;
 		gbc1.gridx=0;
-		cadreCo.add(connexion,gbc1);
+		cadreCo.add(connect,gbc1);
 				
 		gbc1.gridy=4;
 		gbc1.gridx=1;
 		cadreCo.add(inscription,gbc1);
 	
-		//g.add(mainCadre);
-		
-		
-	
+		GererBouton gestionnaire = new GererBouton();
+		connect.addActionListener(gestionnaire);
 	}
 	
+	final class GererBouton implements ActionListener {
+	      // capture des evenements lies aux boutons
+	      public void actionPerformed( ActionEvent event ){
+	    	  //Vérification du bouton cliqué
+	    	  if(event.getSource()==connect){
+	    		  //vérification de la connexion
+	    		  boolean verifCo = co.idConnect(login.getText().toString(), mdp.getText().toString());
+	    		  if(verifCo == true){
+	    			  JOptionPane.showMessageDialog( null,"Vous êtes connecté." );
+	    		  }else{
+	    			  JOptionPane.showMessageDialog( null,"L'authentification a échouée." );
+	    		  }
+	    		  //Les 2 sont remplis?
+	    		  if(login.getText().toString().length()==0 && mdp.getText().toString().length()==0){
+	    			  JOptionPane.showMessageDialog( null,"Veuillez saisir un identifiant et un mot de passe." );
+	    		  }else{
+	    			  //l'identifiant est remplis?
+		    		  if(login.getText().toString().length()==0){
+		    			  JOptionPane.showMessageDialog( null,"Veuillez saisir un identifiant." );
+		    		  }else{
+		    			  //le mod de passe est rempli?
+		    			  if(mdp.getText().toString().length()==0){
+			    			  JOptionPane.showMessageDialog( null,"Veuillez saisir un mot de passe.." );
+			    		  }
+		    		  }
+	    		  }
+	    	  }
+	      }
+	}
 
 }

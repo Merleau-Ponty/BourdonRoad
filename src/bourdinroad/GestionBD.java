@@ -58,8 +58,15 @@ public class GestionBD {
 		try {
 			Statement st = driverload.getConnexion().createStatement();
 			ResultSet rs = st.executeQuery("select nom_user, prenom_user from UTILISATEURS;");
+			liste.add("--- Sélectionner un utilisateur ---");
 			while(rs.next()){
-				liste.add(rs.getString("nom_user, prenom_user"));
+				String chaineMaj = "";
+				if(rs.getString("prenom_user") != ""){
+					String prenom = rs.getString("prenom_user");
+					chaineMaj=prenom.replaceFirst(".",(prenom.charAt(0)+"").toUpperCase());
+				}
+				String nom = ""+chaineMaj+" "+rs.getString("nom_user").toUpperCase()+"";
+				liste.add(nom);
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -71,10 +78,20 @@ public class GestionBD {
 	
 	/*Fonction de creation de compte*/
 	public void inscription(int num,String nom, String prenom, String mobile,String email,String id, String mdp){
-		ArrayList<String> liste = new ArrayList();
 		try {
 			Statement st = driverload.getConnexion().createStatement();
 			int rs = st.executeUpdate("insert into UTILISATEURS (ID_SERVICES,NOM_USER,PRENOM_USER,MOBILE,EMAIL,LOGIN_USER,PWD_USER) values ('"+num+"','"+nom+"','"+prenom+"','"+mobile+"','"+email+"','"+id+"','"+mdp+"');");
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	/*Fonction de creation de compte*/
+	public void AddQuizz(String nomQuizz){
+		try {
+			Statement st = driverload.getConnexion().createStatement();
+			int rs = st.executeUpdate("insert into QUIZZ (LIBELLE_QUIZZ) values ('"+nomQuizz+"');");
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -108,6 +125,30 @@ public class GestionBD {
 			e.printStackTrace();
 		}
 		return res;
+	}
+	
+	/*Recuperation des infos en fonction du choix dans la liste*/
+	public ArrayList<String> getInfoUser(String nom, String prenom) {
+		ArrayList<String> liste = new ArrayList();
+		try {
+			Statement st = driverload.getConnexion().createStatement();
+			ResultSet rs = st.executeQuery("SELECT `ID_SERVICES`, `NOM_USER`, `PRENOM_USER`, `MOBILE`, `EMAIL`, `LOGIN_USER`, `PWD_USER`, `ADMIN` FROM `UTILISATEURS` WHERE NOM_USER='"+nom+"',PRENOM_USER='"+prenom+"';");
+			while(rs.next()){
+				liste.add(rs.getString("ID_SERVICES").toString());
+				liste.add(rs.getString("NOM_USER").toString());
+				liste.add(rs.getString("PRENOM_USER").toString());
+				liste.add(rs.getString("MOBILE").toString());
+				liste.add(rs.getString("EMAIL").toString());
+				liste.add(rs.getString("LOGIN_USER").toString());
+				liste.add(rs.getString("PWD_USER").toString());
+				liste.add(rs.getString("ADMIN").toString());	
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return liste;
+		
 	}
 	
 }
