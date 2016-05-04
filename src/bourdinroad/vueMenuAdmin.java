@@ -18,26 +18,28 @@ import javax.swing.border.Border;
 
 public class vueMenuAdmin extends JPanel{
 	JPanel menuAdmin = new JPanel();
-	JButton majUser = new JButton("Modification: Utilisateur");
+	JButton majAdmin = new JButton("Modification: Utilisateur");
 	JButton ajoutQuizz = new JButton("Création: Quizz");
 	JButton voirStat = new JButton("Statistique: Afficher");
 	JButton creerQuestion = new JButton("Création: Questions et Réponses");
 	JButton modifQuestion = new JButton("Modification: Questions et Réponses");
 	JButton ajoutQuestion = new JButton("Ajout: Question au Quizz");	
+	JButton deconnexion = new JButton("Déconnexion");
 	
 	public vueMenuAdmin(){
 		
 			JPanel cadreCo = new JPanel();
 			//panel cadre
 			Border borderCadre=BorderFactory.createTitledBorder(" Menu ");
-			menuAdmin .setBorder(borderCadre);
-			menuAdmin .add(majUser);
-			menuAdmin .add(ajoutQuizz);
-			menuAdmin .add(voirStat);
-			menuAdmin .add(creerQuestion);
-			menuAdmin .add(modifQuestion);
-			menuAdmin .add(ajoutQuestion);
-			menuAdmin .add(cadreCo, "CadreCo");
+			menuAdmin.setBorder(borderCadre);
+			menuAdmin.add(majAdmin);
+			menuAdmin.add(ajoutQuizz);
+			menuAdmin.add(voirStat);
+			menuAdmin.add(creerQuestion);
+			menuAdmin.add(modifQuestion);
+			menuAdmin.add(ajoutQuestion);
+			menuAdmin.add(deconnexion);
+			menuAdmin.add(cadreCo, "CadreCo");
 			setLayout(new BorderLayout());
 			add("Center",menuAdmin );
 				
@@ -48,7 +50,7 @@ public class vueMenuAdmin extends JPanel{
 			//modification utilisateur
 			gbc1.gridy=1;
 			gbc1.gridx=0;
-			cadreCo.add(majUser,gbc1);
+			cadreCo.add(majAdmin,gbc1);
 				
 			// ajout d'un quizz
 			gbc1.gridy=1;
@@ -75,6 +77,11 @@ public class vueMenuAdmin extends JPanel{
 			gbc1.gridy=4;
 			gbc1.gridx=1;
 			cadreCo.add(ajoutQuestion,gbc1);
+			
+			//Deconnexion			
+			gbc1.gridy=5;
+			gbc1.gridx=0;
+			cadreCo.add(deconnexion,gbc1);
 			
 			//g.add(mainCadre);
 	}

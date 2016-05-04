@@ -24,8 +24,9 @@ import javax.swing.border.Border;
 
 import bourdinroad.vueInscription.GererBouton;
 
-public class adminUtilisateurs extends JPanel implements MouseListener{
+public class adminUtilisateurs extends JPanel{
 	JButton modifUser=new JButton("Modifier l'utilisateurs");
+	JButton leave = new JButton("Retour au menu");
 	JComboBox users,serv;
 	JCheckBox admin;
 	JLabel[] champForm=new JLabel[11];
@@ -48,14 +49,18 @@ public class adminUtilisateurs extends JPanel implements MouseListener{
 			add("Center",mainCadre);
 			//Creation du formulaire
 			
+			
 			champForm[0]=new JLabel("Nom :");
 			textForm[0] = new JTextField(14);
+			
 			
 			champForm[1]=new JLabel("Prenom :");
 			textForm[1] = new JTextField(14);
 			
+			
 			champForm[2]=new JLabel("Mobile :");
 			textForm[2] = new JTextField(14);
+			
 			
 			champForm[3]=new JLabel("Email :");
 			textForm[3] = new JTextField(14);
@@ -180,12 +185,17 @@ public class adminUtilisateurs extends JPanel implements MouseListener{
 		    gbc.gridx=0;
 		    gestUsers.add(modifUser, gbc);
 		    
+		    /*Boutons*/
+		    gbc.gridy=11;
+		    gbc.gridx=1;
+		    gestUsers.add(leave, gbc);
+		    
 		    GererBouton gest = new GererBouton();
 			modifUser.addActionListener(gest);
 			users.addMouseListener(gest);
 	 }
 	 
-	 final class GererBouton implements ActionListener{
+	 final class GererBouton implements ActionListener, MouseListener{
 			@Override
 			public void actionPerformed(ActionEvent event) {
 				if(admin.isSelected()){
@@ -201,7 +211,58 @@ public class adminUtilisateurs extends JPanel implements MouseListener{
 					JOptionPane.showMessageDialog(null,"problème");
 					}
 				}*/
-			}	
+			}
+			/*permet de remplir automatiquement les champs en fonction de l'utilisateur choisie dans la liste deroulante*/
+			 @Override
+				public void mouseExited(MouseEvent event) {
+				// TODO Auto-generated method stub
+					if(event.getSource()== users){
+						System.out.println("On rentre bien dans le mouse clicked");
+						int indice = users.getSelectedIndex();
+						nom = users.getSelectedItem().toString();
+						
+						String[] parts = nom.split(" ");
+						String lastWord = parts[parts.length-1];
+						String firstWord = parts[parts.length-2];
+						System.out.println(lastWord);
+					
+						ArrayList<String> list = insc.getInfoUser(firstWord,lastWord);
+						
+						/*On remplie les champs du formulaire*/
+						textForm[0].setText(list.get(1));  /*Nom*/
+						textForm[1].setText(list.get(2));   /*Prenom*/ 
+						textForm[2].setText(list.get(3));   /*Mobile*/ 
+						/*Le service*/
+						String service = list.get(0);
+						serv.setSelectedItem(service);
+						textForm[3].setText(list.get(4));   /*email*/ 
+						textForm[4].setText(list.get(5));   /*Identifiant*/ 
+						textForm[5].setText(list.get(6));   /*mdp*/ 
+						textForm[6].setText(list.get(6));   /*mdp confirmation*/ 
+						/*Admin*/
+						if(list.get(7).toString()=="1"){
+							admin.setSelected(true);
+						}
+					}
+				}
+			@Override
+			public void mouseClicked(MouseEvent event) {
+			}
+			@Override
+			public void mouseEntered(MouseEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+			@Override
+			public void mousePressed(MouseEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+			@Override
+			public void mouseReleased(MouseEvent arg0) {
+				// TODO Auto-generated method stub
+				
+			}
 	}
 	 
 	 public boolean verif() {
@@ -232,7 +293,6 @@ public class adminUtilisateurs extends JPanel implements MouseListener{
 				for (int i=0;i<7;i++){
 					if(textForm[i].getText().toString().length()==0){
 						JOptionPane.showMessageDialog(null, messError[i]);
-						textForm[i].setText("");
 						textForm[i].requestFocus();
 						vide = true;
 					}
@@ -240,7 +300,6 @@ public class adminUtilisateurs extends JPanel implements MouseListener{
 				/*Verification de la saisie du mobile*/
 				if(textForm[2].getText().length()<10 || textForm[2].getText().length()>=11 ){
 					JOptionPane.showMessageDialog(null, "Mobile incorrect");
-					textForm[2].setText("");
 					textForm[2].requestFocus();
 					vide = true;
 				}else{
@@ -265,7 +324,6 @@ public class adminUtilisateurs extends JPanel implements MouseListener{
 						        	if (textForm[5].getText().toString().matches(textForm[6].getText().toString()) != true){
 						        		JOptionPane.showMessageDialog(null, "Mots de passe non identiques!");
 										textForm[5].requestFocus();
-										textForm[5].setText("");
 										vide = true;
 						        	}
 						        }
@@ -276,57 +334,4 @@ public class adminUtilisateurs extends JPanel implements MouseListener{
 			/*Renvoie l'inverse de vide si vide = false renvoie true*/
 			return !vide;		
 		}
-	 /*permet de remplir automatiquement les champs en fonction de l'utilisateur choisie dans la liste deroulante*/
-	 @Override
-		public void mouseExited(MouseEvent event) {
-			
-		}
-	@Override
-	public void mouseClicked(MouseEvent event) {
-		// TODO Auto-generated method stub
-		if(event.getSource()== users){
-			System.out.println("On rentre bien dans le mouse clickedS");
-			int indice = users.getSelectedIndex();
-			nom = users.getSelectedItem().toString();
-			
-			      for (String retval: nom.split(" ")){
-			    	  for(int i=0; i<2;i++){
-			    			tab_nom[i]=retval;
-			    	  	}
-			    	  }
-			      }
-			System.out.println(nom);
-			ArrayList<String> list = insc.getInfoUser(tab_nom[0],tab_nom[1]);
-			
-			/*On remplie les champs du formulaire*/
-			textForm[0].setText(list.get(1));  /*Nom*/
-			textForm[1].setText(list.get(2));   /*Prenom*/ 
-			textForm[2].setText(list.get(3));   /*Mobile*/ 
-			/*Le service*/
-			String service = list.get(0);
-			serv.setSelectedItem(service);
-			textForm[3].setText(list.get(4));   /*email*/ 
-			textForm[4].setText(list.get(5));   /*Identifiant*/ 
-			textForm[5].setText(list.get(6));   /*mdp*/ 
-			textForm[6].setText(list.get(6));   /*mdp confirmation*/ 
-			/*Admin*/
-			if(list.get(7).toString()=="1"){
-				admin.setSelected(true);
-			}
-	}
-	@Override
-	public void mouseEntered(MouseEvent arg0) {
-		// TODO Auto-generated method stub
-		
-	}
-	@Override
-	public void mousePressed(MouseEvent arg0) {
-		// TODO Auto-generated method stub
-		
-	}
-	@Override
-	public void mouseReleased(MouseEvent arg0) {
-		// TODO Auto-generated method stub
-		
-	}
 }

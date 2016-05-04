@@ -15,6 +15,7 @@ import bourdinroad.Ecran.GererBouton;
 public class mainFrame extends JFrame {
 	JPanel p = new JPanel();
 	
+	/*Instanciation*/
 	vueConnexion p1 = new vueConnexion();
 	vueInscription p2 = new vueInscription();
 	vueMenuAdmin p3 = new vueMenuAdmin();
@@ -22,7 +23,13 @@ public class mainFrame extends JFrame {
 	vuAddQuizz p5 = new vuAddQuizz();
 	vueAddQR p6 = new vueAddQR();
 	vueMenuUsers p7 = new vueMenuUsers();
+	userUtilisateurs p8= new userUtilisateurs();
+	AddQtoQ p9 = new AddQtoQ();
+	vueRepQuizz p10 = new vueRepQuizz();
+	vueSetQR p11 = new vueSetQR();
+	vueQuizz p12 = new vueQuizz();
 	
+	/*Creation du card layout*/
 	CardLayout carte = new CardLayout();
 	
 	public mainFrame(String titre,int largeur,int hauteur) {
@@ -37,16 +44,29 @@ public class mainFrame extends JFrame {
 		g.add(p);
 		
 		GererBouton gestionnaire = new GererBouton();
+		/*Ajout des ecouteurs pour changer de panel*/
 		p1.connect.addActionListener(gestionnaire);
 		p1.inscription.addActionListener(gestionnaire);
 		p2.connexion.addActionListener(gestionnaire);
-		p3.majUser.addActionListener(gestionnaire);
+		p3.majAdmin.addActionListener(gestionnaire);
 		p3.ajoutQuizz.addActionListener(gestionnaire);
 		p5.leaveAddQuizz.addActionListener(gestionnaire);
+		p3.creerQuestion.addActionListener(gestionnaire);
+		p6.leaveAddQR.addActionListener(gestionnaire);
+		p7.majUser.addActionListener(gestionnaire);
 		p3.ajoutQuestion.addActionListener(gestionnaire);
-		
+		p7.repondreQuizz.addActionListener(gestionnaire);
+		p3.modifQuestion.addActionListener(gestionnaire);
+		p9.leave.addActionListener(gestionnaire);
+		p4.leave.addActionListener(gestionnaire);
+		p11.leave.addActionListener(gestionnaire);
+		p10.goQuizz.addActionListener(gestionnaire);
+		p3.deconnexion.addActionListener(gestionnaire);
+		p7.deconnexion.addActionListener(gestionnaire);
 	}
 	
+	
+	//Methodes pour aller sur une carte
 	public void goToInscription(){
 		p.add("inscription",p2);
 		carte.next(p);
@@ -66,7 +86,7 @@ public class mainFrame extends JFrame {
 	}
 	
 	public void goToMajAdmin(){
-		p.add("majUser",p4);
+		p.add("majAdmin",p4);
 		carte.next(p);
 	}	
 	
@@ -80,12 +100,47 @@ public class mainFrame extends JFrame {
 		carte.next(p);
 	}
 	
-	public void leaveAddQuizz(){
+	public void leavePannel(){
 		p.add("leaveAddQuizz",p3);
-		carte.next(p);
+		p.add("leaveAddQR",p3);
+		p.add("leaveAddQtoQ", p3);
+		p.add("leaveSetAdmin", p3);
+		p.add("leaveSetQR", p3);
+		carte.last(p);
 	}
+	
 	public void goToMenuUsers(){
 		p.add("menuUsers",p7);
+		carte.next(p);
+	}
+	
+	public void goToMajUser(){
+		p.add("majUser",p8);
+		carte.next(p);
+	}
+	
+	public void goToAddQtoQ(){
+		p.add("AddQtoQ",p9);
+		carte.next(p);
+	}
+
+	public void goToRepQuizz(){
+		p.add("vueRepQuizz",p10);
+		carte.next(p);
+	}
+	
+	public void goToSetQR(){
+		p.add("SetQR",p11);
+		carte.next(p);
+	}
+	
+	public void goToQuizz(){
+		p.add("Quizz",p12);
+		carte.next(p);
+	}
+	
+	public void deco() {
+		p.add("deco",p1);
 		carte.next(p);
 	}
 	
@@ -98,35 +153,54 @@ public class mainFrame extends JFrame {
 	    		  //vérification de la connexion
 	    		  boolean verifCo = p1.co.idConnect(p1.login.getText().toString(), p1.mdp.getText().toString());
 	    		  if(verifCo == true){
-	    			  //JOptionPane.showMessageDialog( null,"Vous êtes connecté." );
-	    			  goToMenuAdmin();
+	    			  /*Verification si l'utilisateur est admin ou pas, on lui affecte le menu en concequences*/
+	    			  boolean verifAdmin = p1.co.verifAdmin(p1.login.getText().toString(), p1.mdp.getText().toString());
+	    			  if(verifAdmin == true){
+	    				//JOptionPane.showMessageDialog( null,"Vous êtes connecté." );
+		    			  goToMenuAdmin();
+	    			  }else {
+	    				  goToMenuUsers();
+	    			  }  
 	    		  }else{
-	    			  /*JOptionPane.showMessageDialog( null,"L'authentification a échouée." );*/
-	    			  goToMenuUsers();
+	    			 JOptionPane.showMessageDialog( null,"L'authentification a échouée." );
 	    		  }
 	    	  }
 	    	  if(event.getSource()==p1.inscription){
 	    		  goToInscription();
 	    	  }
 	    	  if(event.getSource()==p2.connexion){
-	    		  System.out.println("event");
 	    		  goToConnexion();
 	    	  }
-	    	  if(event.getSource()==p3.majUser){
-	    		  System.out.println("event");
+	    	  if(event.getSource()==p3.majAdmin){
 	    		  goToMajAdmin();
 	    	  }
 	    	  if(event.getSource()==p3.ajoutQuizz){
-	    		  System.out.println("event");
 	    		  goToAddQuizz();
 	    	  }
-	    	  if(event.getSource()==p5.leaveAddQuizz){
-	    		  System.out.println("event");
-	    		  leaveAddQuizz();
+	    	  if(event.getSource()==p5.leaveAddQuizz || event.getSource()==p6.leaveAddQR || event.getSource()==p9.leave 
+	    			  || event.getSource()==p4.leave || event.getSource()==p11.leave){
+	    		  leavePannel();
+	    	  }
+	    	  if(event.getSource()==p3.creerQuestion){
+	    		  goToAddQR();
+	    	  }
+	    	  if(event.getSource()==p7.majUser){
+	    		  goToMajUser();
 	    	  }
 	    	  if(event.getSource()==p3.ajoutQuestion){
-	    		  System.out.println("event");
-	    		  goToAddQR();
+	    		  goToAddQtoQ();
+	    	  }
+	    	  if(event.getSource()==p7.repondreQuizz){
+	    		  goToRepQuizz();
+	    	  }
+	    	  if(event.getSource()==p3.modifQuestion){
+	    		  goToSetQR();
+	    	  }
+	    	  if(event.getSource()==p10.goQuizz){
+	    		  goToQuizz();
+	    	  }
+	    	  if(event.getSource()==p3.deconnexion || event.getSource()==p7.deconnexion){
+	    		  deco();
 	    	  }
 	      }
 	}

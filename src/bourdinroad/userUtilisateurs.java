@@ -34,6 +34,7 @@ public class userUtilisateurs extends JPanel{
 	JPanel mainCadre=new JPanel();
 	GestionBD insc = new GestionBD();
 	String recap,email,messError[],caract_ind[];
+	vueConnexion p1 = new vueConnexion();
 	
 	 public userUtilisateurs() {
 		 	super();
@@ -81,14 +82,6 @@ public class userUtilisateurs extends JPanel{
 			/*Ajout de ce composant au container en spécifiant une contrainte de type GridBagConstraints. */
 			gestUsers.setLayout(new GridBagLayout());
 		    GridBagConstraints gbc = new GridBagConstraints();
-		    
-		    /*Liste des utilisateurs*/
-		    gbc.gridy=0;
-		    gbc.gridx=0;
-		    gestUsers.add(champForm[9], gbc);
-		    gbc.gridy=0;
-		    gbc.gridx=1;
-		    gestUsers.add(users, gbc);
 		    
 		    /*Nom*/
 		    gbc.gridy=1;
@@ -171,16 +164,24 @@ public class userUtilisateurs extends JPanel{
 	 final class GererBouton implements ActionListener{
 			@Override
 			public void actionPerformed(ActionEvent event) {
-				/*if(verif()){
+				if(verif()){
 					try {
-						insc.modification(serv.getSelectedIndex(),textForm[0].getText().toString(),textForm[1].getText().toString(),textForm[2].getText().toString(),textForm[3].getText().toString(),textForm[4].getText().toString(),textForm[5].getText().toString());
+						int identifiant = 0;
+						int id = p1.co.getIdConnect(p1.login.getText().toString(), p1.mdp.getText().toString());
+						 boolean verifAdmin = p1.co.verifAdmin(p1.login.getText().toString(), p1.mdp.getText().toString());
+		    			  if(verifAdmin == true){
+		    				//JOptionPane.showMessageDialog( null,"Vous êtes connecté." );
+			    			   identifiant=1;
+		    			  }else {
+		    				  	identifiant=0;
+		    			  }  
+						insc.modification(id,serv.getSelectedIndex(),textForm[0].getText().toString(),textForm[1].getText().toString(),textForm[2].getText().toString(),textForm[3].getText().toString(),textForm[4].getText().toString(),textForm[5].getText().toString(),identifiant);
 						
-						recap = "Utilisateur modifier avec succes";
-						JOptionPane.showMessageDialog(null,recap);
+						JOptionPane.showMessageDialog(null,"Utilisateur modifier avec succes");
 					} catch(NumberFormatException e){
 					JOptionPane.showMessageDialog(null,"problème");
 					}
-				}*/
+				}
 			}	
 	}
 	 
@@ -212,7 +213,6 @@ public class userUtilisateurs extends JPanel{
 				for (int i=0;i<7;i++){
 					if(textForm[i].getText().toString().length()==0){
 						JOptionPane.showMessageDialog(null, messError[i]);
-						textForm[i].setText("");
 						textForm[i].requestFocus();
 						vide = true;
 					}
@@ -220,7 +220,6 @@ public class userUtilisateurs extends JPanel{
 				/*Verification de la saisie du mobile*/
 				if(textForm[2].getText().length()<10 || textForm[2].getText().length()>=11 ){
 					JOptionPane.showMessageDialog(null, "Mobile incorrect");
-					textForm[2].setText("");
 					textForm[2].requestFocus();
 					vide = true;
 				}else{
@@ -245,7 +244,6 @@ public class userUtilisateurs extends JPanel{
 						        	if (textForm[5].getText().toString().matches(textForm[6].getText().toString()) != true){
 						        		JOptionPane.showMessageDialog(null, "Mots de passe non identiques!");
 										textForm[5].requestFocus();
-										textForm[5].setText("");
 										vide = true;
 						        	}
 						        }

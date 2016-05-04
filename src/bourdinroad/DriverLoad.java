@@ -16,6 +16,7 @@ public class DriverLoad {
 		}
 	}
 	
+	/*Permet de se connecter  a la BDD*/
 	public Connection getConnexion(){
 		try {
 			connexion= DriverManager.getConnection("jdbc:mysql://172.20.251.13/BOURDONROAD","bourdonroad","bourdonroad");

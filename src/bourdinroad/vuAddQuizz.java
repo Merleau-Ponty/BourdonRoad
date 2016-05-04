@@ -50,30 +50,37 @@ public class vuAddQuizz extends JPanel {
 	    GridBagConstraints gbc = new GridBagConstraints();
 	    GridBagConstraints gbc1 = new GridBagConstraints();
 		
+	    /*Explication 1*/
 	    gbc.gridy=0;
 	    gbc.gridx=0;
 	    gestAddQuizz.add(intro, gbc);
 	    
+	    /*Explication 2*/
 	    gbc.gridy=1;
 	    gbc.gridx=0;
 	    gestAddQuizz.add(intro1, gbc);
 	    
+	    /*Explication 3*/
 	    gbc.gridy=1;
 	    gbc.gridx=1;
 	    gestAddQuizz.add(intro2, gbc);
 	    
+	    /**/
 	    gbc1.gridy=2;
 	    gbc1.gridx=0;
 	    gestAddQuizz.add(labNomQuizz, gbc1);
 	    
+	    /*Nom du quizz*/
 	    gbc1.gridy=2;
 	    gbc1.gridx=1;
 	    gestAddQuizz.add(nomQuizz, gbc1);
 	    
+	    /*Bouton sauvegarde*/
 	    gbc1.gridy=3;
 	    gbc1.gridx=0;
 	    gestAddQuizz.add(save, gbc1);
 	    
+	    /*Quitter le quizz*/
 	    gbc1.gridy=4;
 	    gbc1.gridx=0;
 	    gestAddQuizz.add(leaveAddQuizz, gbc1);
